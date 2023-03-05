@@ -79,8 +79,9 @@ class Running(Training):
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
 
-    first_weight_multiplier: float = 0.035  # Первый множитель веса
-    second_weight_multiplier: float = 0.029  # Второй множитель веса
+    weight_multiplier: float = 0.035  # Множитель веса
+    mean_speed_height_multiplier: float = 0.029
+    # Множитель корректировки частного квадрата средней скорости на рост
     m_s_mean_speed_multiplier: float = 0.278
     # Множитель сердней скорости для перевода в м/с
     mean_speed_multiplier: int = 2  # Множитель средней скорости
@@ -100,12 +101,12 @@ class SportsWalking(Training):
         Получить количество затраченных калорий
         во время спортивной ходьбы.
         """
-        return ((self.first_weight_multiplier * self.weight
+        return ((self.weight_multiplier * self.weight
                 + ((self.get_mean_speed()
                     * self.m_s_mean_speed_multiplier)
                    ** self.mean_speed_multiplier
                    / (self.height / self.height_multiplier))
-                * self.second_weight_multiplier * self.weight)
+                * self.mean_speed_height_multiplier * self.weight)
                 * self.duration * self.HOUR)
 
 
